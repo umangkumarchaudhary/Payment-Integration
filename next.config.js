@@ -2,8 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  env: {
-    PHONEPE_MERCHANT_ID: process.env.PHONEPE_MERCHANT_ID,
+  // Disable fast refresh issues
+  onDemandEntries: {
+    maxInactiveAge: 60 * 1000,
+    pagesBufferLength: 5,
   },
 }
 

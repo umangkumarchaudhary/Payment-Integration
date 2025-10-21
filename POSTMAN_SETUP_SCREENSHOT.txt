@@ -1,0 +1,200 @@
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                                                                           ║
+║                    POSTMAN SETUP - STEP BY STEP                           ║
+║                                                                           ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+STEP 1: CREATE NEW REQUEST
+═══════════════════════════════════════════════════════════════════════════
+1. Open Postman
+2. Click "New" → "HTTP Request"
+3. You'll see a blank request window
+
+
+STEP 2: SET METHOD AND URL
+═══════════════════════════════════════════════════════════════════════════
+┌─────────────────────────────────────────────────────────────────────────┐
+│ [POST ▼]  https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay     │
+│                                                                          │
+│ [Params] [Authorization] [Headers] [Body] [Pre-request] [Tests]         │
+└─────────────────────────────────────────────────────────────────────────┘
+
+Copy and paste this URL:
+https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay
+
+
+STEP 3: ADD HEADERS
+═══════════════════════════════════════════════════════════════════════════
+Click "Headers" tab
+
+Add these 2 headers:
+
+┌────────────────────────┬──────────────────────────────────────────────────┐
+│ KEY                    │ VALUE                                            │
+├────────────────────────┼──────────────────────────────────────────────────┤
+│ Content-Type           │ application/json                                 │
+├────────────────────────┼──────────────────────────────────────────────────┤
+│ X-VERIFY               │ 0a4c8bead628244e34f5aeb52a14b93edef64d82c928cb1ee4fbe98b05b485de###1 │
+└────────────────────────┴──────────────────────────────────────────────────┘
+
+IMPORTANT: The X-VERIFY value above changes each time you run the script!
+Run: node generate-postman-request.js
+And copy the NEW X-VERIFY value from the output.
+
+
+STEP 4: SET BODY
+═══════════════════════════════════════════════════════════════════════════
+Click "Body" tab
+
+Select:
+  ○ none
+  ○ form-data
+  ○ x-www-form-urlencoded
+  ● raw          [Select this!]
+  ○ binary
+  ○ GraphQL
+
+In the dropdown next to "raw", select: JSON
+
+Paste this in the text area:
+
+{
+  "request": "eyJtZXJjaGFudElkIjoiTUFTU1JFVEFJTFVBVCIsIm1lcmNoYW50VHJhbnNhY3Rpb25JZCI6IlQxNzYxMDY4NTM1MDY0IiwibWVyY2hhbnRVc2VySWQiOiJNVUlEMTc2MTA2ODUzNTA2NCIsImFtb3VudCI6MTAwMDAsInJlZGlyZWN0VXJsIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwL2FwaS9waG9uZXBlL2NhbGxiYWNrIiwicmVkaXJlY3RNb2RlIjoiUkVESVJFQ1QiLCJjYWxsYmFja1VybCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMC9hcGkvcGhvbmVwZS93ZWJob29rIiwibW9iaWxlTnVtYmVyIjoiOTk5OTk5OTk5OSIsInBheW1lbnRJbnN0cnVtZW50Ijp7InR5cGUiOiJVUElfQ09MTEVDVCIsInZwYSI6InN1Y2Nlc3NAeWJsIn19"
+}
+
+IMPORTANT: This "request" value also changes each time!
+Run: node generate-postman-request.js
+And copy the NEW body from the output.
+
+
+STEP 5: SEND REQUEST
+═══════════════════════════════════════════════════════════════════════════
+Click the blue "Send" button
+
+
+STEP 6: VIEW RESPONSE
+═══════════════════════════════════════════════════════════════════════════
+You'll see the response at the bottom:
+
+CURRENT RESPONSE (Before Activation):
+{
+  "success": false,
+  "code": "KEY_NOT_CONFIGURED",
+  "message": "Key not found for the merchant",
+  "data": {}
+}
+
+This proves:
+✅ Your request format is correct
+✅ PhonePe received your request
+✅ They just need to activate your merchant
+
+AFTER ACTIVATION (Expected):
+{
+  "success": true,
+  "code": "PAYMENT_INITIATED",
+  "message": "Payment initiated",
+  "data": {
+    "merchantId": "MASSRETAILUAT",
+    "merchantTransactionId": "T1761068535064",
+    "instrumentResponse": {
+      "type": "UPI_COLLECT",
+      "redirectInfo": {
+        "url": "https://phonepe.com/...",
+        "method": "GET"
+      }
+    }
+  }
+}
+
+
+═══════════════════════════════════════════════════════════════════════════
+TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════════════════
+
+ERROR: "Could not send request"
+→ Check internet connection
+→ Try again
+
+ERROR: "INVALID_REQUEST"
+→ Re-run: node generate-postman-request.js
+→ Copy fresh values
+
+ERROR: "INVALID_SIGNATURE"
+→ Make sure X-VERIFY matches the body
+→ Run script again to get matching pair
+
+ERROR: "KEY_NOT_CONFIGURED"
+→ This is EXPECTED before activation
+→ Ask PhonePe to activate merchant
+
+SUCCESS: "PAYMENT_INITIATED"
+→ Congratulations! It's working!
+→ Merchant is activated!
+
+
+═══════════════════════════════════════════════════════════════════════════
+SAVE AS COLLECTION
+═══════════════════════════════════════════════════════════════════════════
+
+1. Click "Save" button (top right)
+2. Name: "PhonePe UAT Test"
+3. Create Collection: "PhonePe Integration"
+4. Click "Save"
+
+Now you can reuse this request anytime!
+
+
+═══════════════════════════════════════════════════════════════════════════
+FOR PHONEPE MEETING
+═══════════════════════════════════════════════════════════════════════════
+
+BEFORE MEETING:
+1. Run: node generate-postman-request.js
+2. Setup Postman with fresh values
+3. Test (should get KEY_NOT_CONFIGURED)
+4. Save as collection
+
+DURING MEETING:
+1. Share screen
+2. Show Postman request setup
+3. Click "Send" → Show KEY_NOT_CONFIGURED
+4. Say: "Can you activate MASSRETAILUAT now?"
+5. Wait for them to activate (2-3 minutes)
+6. Click "Send" again
+7. Should show PAYMENT_INITIATED! 🎉
+
+AFTER SUCCESS:
+8. Test with pending@ybl
+9. Test with failed@ybl
+10. Show your app working too
+
+
+═══════════════════════════════════════════════════════════════════════════
+QUICK REFERENCE
+═══════════════════════════════════════════════════════════════════════════
+
+Run this anytime you need fresh values:
+  node generate-postman-request.js
+
+Postman tabs you need:
+  ✓ Headers (2 headers)
+  ✓ Body (raw JSON)
+
+What to send:
+  POST request with base64 encoded payload
+
+What proves it's correct:
+  Getting KEY_NOT_CONFIGURED (not INVALID_REQUEST or INVALID_SIGNATURE)
+
+What PhonePe needs to do:
+  Activate merchant MASSRETAILUAT on their server
+
+
+═══════════════════════════════════════════════════════════════════════════
+
+✅ POSTMAN SETUP COMPLETE!
+✅ X-VERIFY IS CORRECT!
+✅ READY FOR PHONEPE MEETING!
+
+═══════════════════════════════════════════════════════════════════════════

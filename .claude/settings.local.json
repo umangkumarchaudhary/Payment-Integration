@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(dir)",
-      "Bash(tree /F /A)"
+      "Bash(tree /F /A)",
+      "Bash(npm run dev)",
+      "Bash(node -c \"C:\\Users\\RaamGroup Digital\\Downloads\\Payment Integration\\lib\\phonepe.js\")",
+      "Bash(node generate-postman-request.js)",
+      "Bash(node generate-autopay-postman.js)"
     ],
     "deny": [],
     "ask": []

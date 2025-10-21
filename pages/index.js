@@ -1,6 +1,126 @@
 import { useState } from 'react';
 import Head from 'next/head';
 
+// Move styles outside component to prevent re-creation on each render
+const styles = {
+  container: {
+    minHeight: '100vh',
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    padding: '20px',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+  },
+  card: {
+    maxWidth: '600px',
+    margin: '0 auto',
+    background: 'white',
+    borderRadius: '12px',
+    padding: '30px',
+    boxShadow: '0 10px 40px rgba(0,0,0,0.1)'
+  },
+  title: {
+    fontSize: '28px',
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: '8px',
+    textAlign: 'center'
+  },
+  subtitle: {
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: '30px'
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '24px'
+  },
+  section: {
+    borderTop: '2px solid #f0f0f0',
+    paddingTop: '20px'
+  },
+  sectionTitle: {
+    fontSize: '18px',
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: '16px'
+  },
+  inputGroup: {
+    marginBottom: '16px'
+  },
+  label: {
+    display: 'block',
+    fontSize: '14px',
+    fontWeight: '500',
+    color: '#333',
+    marginBottom: '6px'
+  },
+  input: {
+    width: '100%',
+    padding: '12px',
+    border: '2px solid #e0e0e0',
+    borderRadius: '8px',
+    fontSize: '16px',
+    transition: 'border-color 0.3s',
+    boxSizing: 'border-box'
+  },
+  hint: {
+    fontSize: '12px',
+    color: '#999',
+    display: 'block',
+    marginTop: '4px'
+  },
+  summary: {
+    background: '#f8f9fa',
+    padding: '20px',
+    borderRadius: '8px',
+    border: '2px solid #e9ecef'
+  },
+  summaryTitle: {
+    fontSize: '16px',
+    fontWeight: '600',
+    marginBottom: '12px',
+    color: '#333'
+  },
+  summaryRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginBottom: '8px',
+    fontSize: '14px'
+  },
+  error: {
+    background: '#fee',
+    border: '1px solid #fcc',
+    color: '#c33',
+    padding: '12px',
+    borderRadius: '8px',
+    fontSize: '14px'
+  },
+  success: {
+    background: '#efe',
+    border: '1px solid #cfc',
+    color: '#3c3',
+    padding: '12px',
+    borderRadius: '8px',
+    fontSize: '14px'
+  },
+  button: {
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    color: 'white',
+    padding: '16px',
+    border: 'none',
+    borderRadius: '8px',
+    fontSize: '16px',
+    fontWeight: '600',
+    cursor: 'pointer',
+    transition: 'transform 0.2s',
+    marginTop: '10px'
+  },
+  buttonDisabled: {
+    opacity: 0.6,
+    cursor: 'not-allowed'
+  }
+};
+
 export default function Home() {
   const [formData, setFormData] = useState({
     customerName: '',
@@ -42,7 +162,7 @@ export default function Home() {
     setResult(null);
 
     try {
-      const response = await fetch('/api/phonepe/initiate-autopay', {
+      const response = await fetch('/api/phonepe/initiate-autopay-v2', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -122,16 +242,20 @@ export default function Home() {
               </div>
 
               <div style={styles.inputGroup}>
-                <label style={styles.label}>UPI ID (Optional)</label>
-                <input
-                  type="text"
+                <label style={styles.label}>UPI ID (For Testing) *</label>
+                <select
                   name="upiId"
                   value={formData.upiId}
                   onChange={handleChange}
+                  required
                   style={styles.input}
-                  placeholder="customer@upi"
-                />
-                <small style={styles.hint}>Leave empty for UPI intent flow</small>
+                >
+                  <option value="">Select test VPA</option>
+                  <option value="success@ybl">success@ybl (✓ Simulate Success)</option>
+                  <option value="pending@ybl">pending@ybl (⏳ Simulate Pending)</option>
+                  <option value="failed@ybl">failed@ybl (✗ Simulate Failed)</option>
+                </select>
+                <small style={styles.hint}>Use PhonePe Simulator App to test these VPAs</small>
               </div>
             </div>
 
@@ -265,123 +389,3 @@ export default function Home() {
     </>
   );
 }
-
-// Inline styles for simplicity (use CSS modules or styled-components in production)
-const styles = {
-  container: {
-    minHeight: '100vh',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    padding: '20px',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-  },
-  card: {
-    maxWidth: '600px',
-    margin: '0 auto',
-    background: 'white',
-    borderRadius: '12px',
-    padding: '30px',
-    boxShadow: '0 10px 40px rgba(0,0,0,0.1)'
-  },
-  title: {
-    fontSize: '28px',
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: '8px',
-    textAlign: 'center'
-  },
-  subtitle: {
-    color: '#666',
-    textAlign: 'center',
-    marginBottom: '30px'
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '24px'
-  },
-  section: {
-    borderTop: '2px solid #f0f0f0',
-    paddingTop: '20px'
-  },
-  sectionTitle: {
-    fontSize: '18px',
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: '16px'
-  },
-  inputGroup: {
-    marginBottom: '16px'
-  },
-  label: {
-    display: 'block',
-    fontSize: '14px',
-    fontWeight: '500',
-    color: '#333',
-    marginBottom: '6px'
-  },
-  input: {
-    width: '100%',
-    padding: '12px',
-    border: '2px solid #e0e0e0',
-    borderRadius: '8px',
-    fontSize: '16px',
-    transition: 'border-color 0.3s',
-    boxSizing: 'border-box'
-  },
-  hint: {
-    fontSize: '12px',
-    color: '#999',
-    display: 'block',
-    marginTop: '4px'
-  },
-  summary: {
-    background: '#f8f9fa',
-    padding: '20px',
-    borderRadius: '8px',
-    border: '2px solid #e9ecef'
-  },
-  summaryTitle: {
-    fontSize: '16px',
-    fontWeight: '600',
-    marginBottom: '12px',
-    color: '#333'
-  },
-  summaryRow: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginBottom: '8px',
-    fontSize: '14px'
-  },
-  error: {
-    background: '#fee',
-    border: '1px solid #fcc',
-    color: '#c33',
-    padding: '12px',
-    borderRadius: '8px',
-    fontSize: '14px'
-  },
-  success: {
-    background: '#efe',
-    border: '1px solid #cfc',
-    color: '#3c3',
-    padding: '12px',
-    borderRadius: '8px',
-    fontSize: '14px'
-  },
-  button: {
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    color: 'white',
-    padding: '16px',
-    border: 'none',
-    borderRadius: '8px',
-    fontSize: '16px',
-    fontWeight: '600',
-    cursor: 'pointer',
-    transition: 'transform 0.2s',
-    marginTop: '10px'
-  },
-  buttonDisabled: {
-    opacity: 0.6,
-    cursor: 'not-allowed'
-  }
-};

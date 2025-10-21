@@ -84,17 +84,91 @@ export default async function handler(req, res) {
       });
     }
 
-    // Make API call to PhonePe
+    // Make API call to PhonePe (or use demo mode)
     try {
-      const response = await axios.post(
-        subscriptionRequest.apiEndpoint,
-        {
-          request: subscriptionRequest.payload
-        },
-        {
-          headers: subscriptionRequest.headers
+      console.log('Making request to PhonePe...');
+      console.log('Endpoint:', subscriptionRequest.apiEndpoint);
+      console.log('Payload:', subscriptionRequest.rawPayload);
+      console.log('Headers:', subscriptionRequest.headers);
+
+      let response;
+
+      // Demo Mode - Simulate PhonePe responses for testing
+      if (process.env.DEMO_MODE === 'true') {
+        console.log('🎭 DEMO MODE: Simulating PhonePe response...');
+
+        // Simulate response based on VPA
+        let simulatedResponse;
+        if (upiId === 'success@ybl') {
+          simulatedResponse = {
+            data: {
+              success: true,
+              code: 'PAYMENT_SUCCESS',
+              message: 'Your request has been successfully completed.',
+              data: {
+                merchantId: subscriptionRequest.rawPayload.merchantId,
+                merchantTransactionId: subscriptionRequest.transactionId,
+                transactionId: `PP${Date.now()}`,
+                amount: subscriptionRequest.rawPayload.amount,
+                state: 'COMPLETED',
+                responseCode: 'SUCCESS',
+                paymentInstrument: {
+                  type: 'UPI',
+                  vpa: upiId
+                }
+              }
+            }
+          };
+        } else if (upiId === 'pending@ybl') {
+          simulatedResponse = {
+            data: {
+              success: true,
+              code: 'PAYMENT_PENDING',
+              message: 'Your payment is pending.',
+              data: {
+                merchantId: subscriptionRequest.rawPayload.merchantId,
+                merchantTransactionId: subscriptionRequest.transactionId,
+                transactionId: `PP${Date.now()}`,
+                amount: subscriptionRequest.rawPayload.amount,
+                state: 'PENDING',
+                responseCode: 'PENDING'
+              }
+            }
+          };
+        } else if (upiId === 'failed@ybl') {
+          simulatedResponse = {
+            data: {
+              success: false,
+              code: 'PAYMENT_ERROR',
+              message: 'Payment failed.',
+              data: {
+                merchantId: subscriptionRequest.rawPayload.merchantId,
+                merchantTransactionId: subscriptionRequest.transactionId,
+                transactionId: `PP${Date.now()}`,
+                amount: subscriptionRequest.rawPayload.amount,
+                state: 'FAILED',
+                responseCode: 'PAYMENT_DECLINED'
+              }
+            }
+          };
         }
-      );
+
+        response = simulatedResponse;
+        console.log('🎭 Simulated Response:', response.data);
+      } else {
+        // Real PhonePe API call
+        response = await axios.post(
+          subscriptionRequest.apiEndpoint,
+          {
+            request: subscriptionRequest.payload
+          },
+          {
+            headers: subscriptionRequest.headers,
+            timeout: 30000
+          }
+        );
+        console.log('PhonePe Response:', response.data);
+      }
 
       // Store subscription details in your database here
       // For demo, we'll return the details
@@ -104,6 +178,7 @@ export default async function handler(req, res) {
         transactionId: subscriptionRequest.transactionId,
         customerName: customerName,
         phone: phone,
+        upiId: upiId,
         packageName: packageName,
         totalAmount: totalAmount,
         installmentAmount: installmentAmount,
@@ -113,12 +188,14 @@ export default async function handler(req, res) {
 
       return res.status(200).json({
         success: true,
-        message: 'AutoPay subscription initiated successfully',
+        message: 'Payment request initiated successfully',
         data: {
           ...subscriptionDetails,
           phonepeResponse: response.data,
           // If PhonePe returns a payment URL, include it
-          paymentUrl: response.data?.data?.instrumentResponse?.redirectInfo?.url
+          paymentUrl: response.data?.data?.instrumentResponse?.redirectInfo?.url,
+          // Include the transaction ID for checking status
+          checkStatusUrl: `/api/phonepe/check-status?transactionId=${subscriptionRequest.transactionId}`
         }
       });
 

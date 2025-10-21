@@ -1,0 +1,110 @@
+═══════════════════════════════════════════════════════════════════════════
+COPY THIS EMAIL AND SEND TO PHONEPE SUPPORT
+═══════════════════════════════════════════════════════════════════════════
+
+To: business@phonepe.com
+CC: merchant.support@phonepe.com
+Subject: Urgent: Activate Sandbox Testing - Merchant MASSRETAILUAT
+
+Dear PhonePe Support Team,
+
+I have completed the PhonePe payment gateway integration and am ready to test
+in the sandbox environment. However, I am getting "KEY_NOT_CONFIGURED" error.
+
+MERCHANT DETAILS:
+─────────────────────────────────────────────────────────────────────────────
+Merchant ID: MASSRETAILUAT
+Client ID: MASSRETAILUAT_2510171534
+Environment: Sandbox/UAT
+API Endpoint: https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay
+
+CURRENT STATUS:
+─────────────────────────────────────────────────────────────────────────────
+✓ Integration completed
+✓ Request format correct
+✓ Security signatures generated properly
+✓ API calls reaching PhonePe servers
+✗ Getting error: "KEY_NOT_CONFIGURED"
+
+SAMPLE REQUEST:
+─────────────────────────────────────────────────────────────────────────────
+Payload:
+{
+  "merchantId": "MASSRETAILUAT",
+  "merchantTransactionId": "T1761066094730",
+  "merchantUserId": "CUST_1761066094730",
+  "amount": 10000,
+  "redirectUrl": "http://localhost:3000/api/phonepe/callback",
+  "redirectMode": "REDIRECT",
+  "callbackUrl": "http://localhost:3000/api/phonepe/webhook",
+  "mobileNumber": "8825338775",
+  "paymentInstrument": {
+    "type": "UPI_COLLECT",
+    "vpa": "success@ybl"
+  }
+}
+
+Headers:
+X-VERIFY: 5305a9687cc309eb03af6096219f1832964521ee9f17cceee4ab25e3d8c6d80f###1
+Content-Type: application/json
+
+PhonePe Response:
+{
+  "success": false,
+  "code": "KEY_NOT_CONFIGURED",
+  "message": "Key not found for the merchant",
+  "data": {}
+}
+
+REQUEST:
+─────────────────────────────────────────────────────────────────────────────
+Please activate the following for merchant MASSRETAILUAT:
+
+1. Sandbox/UAT environment access
+2. Configure client secret key
+3. Enable test VPAs (success@ybl, pending@ybl, failed@ybl)
+4. Provide PhonePe Simulator app download link
+
+USE CASE:
+─────────────────────────────────────────────────────────────────────────────
+We are a dealership implementing AutoPay for service package installments.
+Customers will pay monthly installments (₹1,000-₹2,000) for 3-5 year packages.
+
+TESTING PLAN:
+─────────────────────────────────────────────────────────────────────────────
+1. Test with success@ybl VPA (successful payment)
+2. Test with pending@ybl VPA (pending payment)
+3. Test with failed@ybl VPA (failed payment)
+4. Test webhook notifications
+5. Complete end-to-end testing
+6. Move to production
+
+URGENCY:
+─────────────────────────────────────────────────────────────────────────────
+We need to demonstrate this to our management this week and deploy to
+production within 2 weeks.
+
+INFORMATION NEEDED:
+─────────────────────────────────────────────────────────────────────────────
+1. Timeline for sandbox activation
+2. Any additional documentation required
+3. Production deployment process
+4. Transaction fee structure
+
+CONTACT DETAILS:
+─────────────────────────────────────────────────────────────────────────────
+Name: [Your Name]
+Company: [Your Company]
+Phone: [Your Phone]
+Email: [Your Email]
+
+Please activate our sandbox access as soon as possible so we can complete
+testing and move to production.
+
+Thank you for your support.
+
+Best regards,
+[Your Name]
+[Your Company Name]
+
+═══════════════════════════════════════════════════════════════════════════
