@@ -14,7 +14,8 @@
       "Bash(node test-fixed-api.js:*)",
       "Bash(npm install:*)",
       "Bash(node test-with-alternative-creds.js:*)",
-      "Bash(node test-correct-api.js:*)"
+      "Bash(node test-correct-api.js:*)",
+      "Bash(dir:*)"
     ],
     "deny": [],
     "ask": []
