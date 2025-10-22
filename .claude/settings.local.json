@@ -6,7 +6,15 @@
       "Bash(npm run dev)",
       "Bash(node -c \"C:\\Users\\RaamGroup Digital\\Downloads\\Payment Integration\\lib\\phonepe.js\")",
       "Bash(node generate-postman-request.js)",
-      "Bash(node generate-autopay-postman.js)"
+      "Bash(node generate-autopay-postman.js)",
+      "Bash(npm install -g ngrok)",
+      "Read(//c/Users/**)",
+      "WebSearch",
+      "WebFetch(domain:developer.phonepe.com)",
+      "Bash(node test-fixed-api.js:*)",
+      "Bash(npm install:*)",
+      "Bash(node test-with-alternative-creds.js:*)",
+      "Bash(node test-correct-api.js:*)"
     ],
     "deny": [],
     "ask": []

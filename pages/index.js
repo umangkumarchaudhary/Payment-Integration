@@ -162,7 +162,7 @@ export default function Home() {
     setResult(null);
 
     try {
-      const response = await fetch('/api/phonepe/initiate-autopay-v2', {
+      const response = await fetch('/api/phonepe/initiate-autopay-v3', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -366,9 +366,21 @@ export default function Home() {
             {/* Success Display */}
             {result && (
               <div style={styles.success}>
-                <strong>Success!</strong> AutoPay request initiated.
+                <strong>✅ Success!</strong> AutoPay subscription setup initiated.
                 <br />
-                <small>Transaction ID: {result.data?.transactionId}</small>
+                <br />
+                <div style={{ textAlign: 'left', fontSize: '14px' }}>
+                  <strong>Order ID:</strong> {result.data?.orderId}
+                  <br />
+                  <strong>Subscription ID:</strong> {result.data?.subscriptionId}
+                  <br />
+                  <strong>Status:</strong> {result.data?.state || 'PENDING'}
+                  <br />
+                  <br />
+                  <div style={{ background: '#fff3cd', padding: '10px', borderRadius: '5px', color: '#856404' }}>
+                    📱 <strong>Next Step:</strong> {result.data?.nextSteps || 'Customer will receive authorization request in their UPI app'}
+                  </div>
+                </div>
               </div>
             )}
 
